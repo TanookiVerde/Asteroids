@@ -1,4 +1,4 @@
-package src;
+package bin;
 
 import java.awt.Color;
 import java.awt.Font;

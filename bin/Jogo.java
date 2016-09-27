@@ -1,4 +1,4 @@
-package src;
+package bin;
 
 import java.util.Set;
 import java.util.HashSet;

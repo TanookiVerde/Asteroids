@@ -1,4 +1,4 @@
-package src;
+package bin;
 
 public class Nave {
     int contador;
