@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Nave()
+comment1.params=tela
+comment1.target=void\ desenhar(Tela)
+comment2.params=dt
+comment2.target=void\ moveEsquerda(double)
+comment3.params=dt
+comment3.target=void\ moveDireita(double)
+comment4.params=dt
+comment4.target=void\ acelera(double)
+comment5.params=dt
+comment5.target=void\ movimentar(double)
+comment6.params=
+comment6.target=Tiro\ shoot()
+numComments=7

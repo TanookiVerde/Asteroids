@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=x\ y\ angulo\ velocidade
+comment0.target=Tiro(double,\ double,\ double,\ double)
+comment1.params=dt
+comment1.target=void\ mover(double)
+comment2.params=tela
+comment2.target=void\ desenhar(Tela)
+numComments=3
