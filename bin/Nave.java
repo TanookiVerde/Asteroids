@@ -54,7 +54,7 @@ public class Nave {
         
     }
     public Tiro shoot(){
-       return new Tiro(this.posX,this.posY,this.angulo,400.0);
+       return new Tiro(this.posX,this.posY,this.angulo,500.0);
        }
     
 }
