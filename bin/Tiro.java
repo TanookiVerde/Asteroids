@@ -21,6 +21,6 @@ public class Tiro
     this.posY += this.vetor*Math.sin(this.angulo)*dt;
     }
   public void desenhar(Tela tela){
-	tela.circulo(this.posX,this.posY,2,this.corTiro); 
+	tela.circulo(this.posX,this.posY,5,this.corTiro); 
 	}
 }

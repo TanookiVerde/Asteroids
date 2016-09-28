@@ -40,11 +40,21 @@ public class Nave {
            }
         this.vetor = this.vetor +100*dt;
     }
+    public void desacelera(double dt){
+        this.vetor -= 100*dt;
+        if (this.vetor <= 0) this.vetor = 0;
+    }
     public void movimentar(double dt){
         this.posX += vetor*Math.cos(angulo)*dt;
         this.posY += vetor*Math.sin(angulo)*dt;
+        if (this.posX+50 >=850) this.posX = 0;
+        if (this.posY+50 >=650) this.posY = 0;
+        if (this.posX+50 <=-50) this.posX = 800;
+        if (this.posY+50 <=-50) this.posY = 600;
+        
     }
     public Tiro shoot(){
        return new Tiro(this.posX,this.posY,this.angulo,400.0);
        }
+    
 }

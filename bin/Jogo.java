@@ -25,13 +25,18 @@ public class Jogo {
         return 600;
     }
     public void tique(Set<String> keys, double dt){
+        double posX =0,
+               posY =0,
+               A1=0;
+        boolean split =false;
         if(keys.contains("left")) nave.moveEsquerda(dt);
         if(keys.contains("right")) nave.moveDireita(dt);
         if(keys.contains("up")) nave.acelera(dt);
         if(keys.contains(" ") && !nave.jaAtirou)this.tiros.add(nave.shoot()); nave.jaAtirou = true;
+        if(keys.contains("down"))nave.desacelera(dt);
         
         nave.contador += 1;
-        if (nave.contador == 10){
+        if (nave.contador == 5){
             nave.contador = 0;
             nave.jaAtirou = false;
         }
@@ -43,16 +48,39 @@ public class Jogo {
         for(Asteroide asteroide: this.asteroides){
           asteroide.mover(dt);
           }
-        if (aleatorio.nextInt(1000) >= 970){
+        if (aleatorio.nextInt(1000) >= 980){
             this.asteroides.add(this.spawn());
         }
         for(Asteroide asteroide: this.asteroides){
             for(Tiro tiro: this.tiros){
-                if (asteroide.colisao(tiro)){
-                    asteroide.alive = false;
+                if (tiro.alive && asteroide.colisao(tiro)){
                     tiro.alive = false;
+                    if (asteroide.tamanho >= 3){
+                        split = true;
+                        posX = tiro.posX;
+                        posY = tiro.posY;
+                        A1 = tiro.angulo;
+                    }
+                    asteroide.alive = false;
                 }
             }
+        }
+        if (split){
+           Asteroide novoAst1 = new Asteroide();
+           Asteroide novoAst2 = new Asteroide();
+           novoAst1.tamanho = 2;
+           novoAst2.tamanho = 2;
+           novoAst1.posX = posX;
+           novoAst2.posX = posX;
+           novoAst1.posY = posY;
+           novoAst2.posY = posY;
+           novoAst1.vetor = 300;
+           novoAst2.vetor = 300;
+           novoAst1.angulo = A1-Math.PI/3;
+           novoAst2.angulo = A1+Math.PI/3;
+           this.asteroides.add(novoAst1);
+           this.asteroides.add(novoAst2);
+           split = false;
         }
     }
     public void tecla(String c){

@@ -16,17 +16,17 @@ public class Asteroide {
         this.posX = gerador.nextInt(800);
         this.posY = gerador.nextInt(600);
         this.tamanho = 1 + gerador.nextInt(4);
-        this.vetor = gerador.nextInt(50);
+        this.vetor = gerador.nextInt(150);
         this.angulo = (Math.PI)*gerador.nextInt(60)/30;
-        this.corAsteroide = Cor.BRANCO;
+        this.corAsteroide = Cor.VERMELHO;
         this.alive = true;
 	}
 	public void desenhar(Tela tela){
 	   tela.circulo(this.posX,this.posY,this.tamanho*10,this.corAsteroide); 
 	   }
 	public void mover(double dt){
-	   this.posX+=this.vetor*Math.cos(angulo);
-	   this.posY+=this.vetor*Math.sin(angulo);
+	   this.posX+=this.vetor*Math.cos(angulo)*dt;
+	   this.posY+=this.vetor*Math.sin(angulo)*dt;
 	   }
 	public boolean colisao(Tiro tiro){
 	   double distancia = 0;
