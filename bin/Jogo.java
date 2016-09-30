@@ -10,7 +10,8 @@ public class Jogo {
     Random aleatorio = new Random();
     Set<Tiro> tiros = new HashSet<Tiro>();
     Set<Asteroide> listaAsteroides = new HashSet<Asteroide>();
-        
+    Cor cor;
+    
     public Jogo(){
         nave = new Nave();
     }
@@ -24,6 +25,9 @@ public class Jogo {
         return 600;
     }
     public void tique(Set<String> keys, double dt){
+        //NAVE ESTA VIVA?
+        if (nave.life <= 0)nave.alive = false;
+        
         //RECEBIMENTO DE CONTROLES
         if(keys.contains("left")) nave.moveEsquerda(dt);
         if(keys.contains("right")) nave.moveDireita(dt);
@@ -53,13 +57,19 @@ public class Jogo {
         if(c.contains(" "))this.tiros.add(nave.shoot());
     }
     public void desenhar(Tela tela){
+        //TIROS
         for(Tiro tiro: this.tiros){
           if (tiro.alive)tiro.desenhar(tela);
           }
+        //NAVE
         nave.desenhar(tela);
+        //ASTEROIDE
         for(Asteroide asteroide:this.listaAsteroides){
           if (asteroide.alive)asteroide.desenhar(tela);
         }
+        //HUD
+        tela.texto(String.format("VIDA: %d", nave.life), 10, 40, 40, Cor.BRANCO);
+        tela.texto(String.format("SCORE: %d", nave.score), 250, 40, 40, Cor.BRANCO);
     }
     public static void main (String[] args){
         new Motor(new Jogo());
@@ -69,22 +79,28 @@ public class Jogo {
     }
     public void sistemaColisao(){
         boolean splitAst = false;
-        double anguloTemp=0,posXTemp=0,posYTemp=0;
+        double anguloTemp = 0,
+               posXTemp = 0,
+               posYTemp = 0;
         Asteroide asteroideTemp;
         for(Asteroide asteroide: this.listaAsteroides){
+            if (asteroide.alive && nave.colisao(asteroide)){nave.life -= 1; asteroide.alive = false;}
             for(Tiro tiro: this.tiros){
                 if (tiro.alive && asteroide.alive && asteroide.colisao(tiro)){
+                    //Motor.tocar("explosion.wav");
+                    nave.score+= asteroide.tamanho*100;//Aumenta SCORE de acordo com o tamanho do asteroide
+                    asteroide.alive = false;//Asteroide eh dado como morto
+                    tiro.alive = false;//Tiro acaba
                     if (asteroide.tamanho > 2){
-                        tiro.alive = false;
+                        asteroide.alive = true;//Volta para ser reutilizado com diferente tamanho e direcao
                         asteroide.angulo = tiro.angulo + Math.PI/2;
-                        if(asteroide.tamanho == 3) asteroide.tamanho = 1;
+                        if(asteroide.tamanho == 3) asteroide.tamanho = 1; 
                         if(asteroide.tamanho == 4) asteroide.tamanho = 2;
                         anguloTemp = asteroide.angulo - Math.PI;
                         posXTemp = asteroide.posX;
                         posYTemp = asteroide.posY;
-                        splitAst = true;
+                        splitAst = true;//permite a criacao de um novo asteroide no if abaixo
                     }
-                    else asteroide.alive = false;
                 }
             }
         }
@@ -97,21 +113,5 @@ public class Jogo {
             this.listaAsteroides.add(asteroideTemp);
             splitAst = false;
         }
-    }
-    public void splitAsteroide(double A1,double posX,double posY){
-       Asteroide novoAst1 = new Asteroide();
-       Asteroide novoAst2 = new Asteroide();
-       novoAst1.tamanho = 2;
-       novoAst2.tamanho = 2;
-       novoAst1.posX = posX;
-       novoAst2.posX = posX;
-       novoAst1.posY = posY;
-       novoAst2.posY = posY;
-       novoAst1.vetor = 300;
-       novoAst2.vetor = 300;
-       novoAst1.angulo = A1-Math.PI/3;
-       novoAst2.angulo = A1+Math.PI/3;
-       this.listaAsteroides.add(novoAst1);
-       this.listaAsteroides.add(novoAst2);
     }
 }

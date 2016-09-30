@@ -25,21 +25,48 @@ public class Asteroide {
        int size = 0,
            x = 0,
            y = 0;
-       if(this.tamanho == 1){size = 15; x = 0; y = 0;}
-       if(this.tamanho == 2){size = 18; x = 15; y = 0;}
-       if(this.tamanho == 3){size = 30; x = 15+18; y = 0;}
-       if(this.tamanho == 4){size = 48; x = 14+17+34; y = 0;}
-       tela.imagem("asteroids.png", x, y, size, size, this.angulo, this.posX, this.posY);
+       //tela.circulo(this.posX,this.posY,this.tamanho*10,Cor.VERMELHO);
+       switch(this.tamanho){
+            case 1:
+                    size = 15;
+                    x = 0;
+                    y = 48;
+                    break;
+            case 2:
+                    size = 16;
+                    x = 16;
+                    y = 48*3;
+                    break;
+            case 3:
+                    size = 33;
+                    x = 32;
+                    y = 96;
+                    break;
+            case 4:
+                    x = 65;
+                    size = 48;
+                    y = 0;
+                    break;
+        }
+       tela.imagem("asteroids.png", x, y, size, size, this.angulo+Math.PI/2, this.posX, this.posY);
        }
     public void mover(double dt){
        this.posX+=this.vetor*Math.cos(angulo)*dt;
        this.posY+=this.vetor*Math.sin(angulo)*dt;
-       //this.angulo += Math.PI*dt*0.05;
+       this.angulo += Math.PI*dt*0.05;
        }
     public boolean colisao(Tiro tiro){
        double distancia = 0;
-       distancia = Math.sqrt( Math.pow((tiro.posX - this.posX),2) + Math.pow((tiro.posY - this.posY),2) );//lembre-se que nao esta no meio
-       if (distancia < 30){
+       distancia = Math.sqrt( Math.pow((this.posX - tiro.posX),2) + Math.pow((this.posY - tiro.posY),2) );//lembre-se que nao esta no meio
+       if (distancia < 5 + this.tamanho*10){
+           return true;
+       }
+       return false;
+       }
+    public boolean colisaoAsteroide(Asteroide asteroide){
+       double distancia = 0;
+       distancia = Math.sqrt( Math.pow((this.posX - asteroide.posX),2) + Math.pow((this.posY - asteroide.posY),2) );//lembre-se que nao esta no meio
+       if (distancia < asteroide.tamanho*7 + this.tamanho*7){
            return true;
        }
        return false;

@@ -1,22 +1,24 @@
 package bin;
 
 public class Nave {
-    int contador;
+    int life,
+        score;
     double posX,
            posY,
            vetor,
            angulo;
-    boolean estaLigada,//se o motor esta em acao
-            jaAtirou;//se a nave atirou (depois de 1 segundo recarrega)
+    boolean estaLigada,
+            alive;
     
     public Nave(){
         posX = 100.0;
         posY = 100.0;
         vetor = 0;
         angulo = 0;
+        life = 3;
+        score = 0;
         estaLigada = false;
-        jaAtirou = false;
-        contador = 0;
+        alive = true;
         
     }
     
@@ -55,6 +57,14 @@ public class Nave {
     }
     public Tiro shoot(){
        return new Tiro(this.posX,this.posY,this.angulo,500.0);
+       }
+    public boolean colisao(Asteroide asteroide){
+       double distancia = 0;
+       distancia = Math.sqrt( Math.pow((asteroide.posX - this.posX-25),2) + Math.pow((asteroide.posY - this.posY-25),2) );//lembre-se que nao esta no meio
+       if (distancia < 10 + asteroide.tamanho*10){
+           return true;
+       }
+       return false;
        }
     
 }
