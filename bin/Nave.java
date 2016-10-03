@@ -24,8 +24,14 @@ public class Nave {
     
     public void desenhar(Tela tela){
         int x, y;
-        x = 70;
-        y = 0;
+        if(this.estaLigada){
+            x = 135;
+            y = 0;
+        }
+        else{
+            x = 70;
+            y = 0;
+        }
         tela.imagem("naves.png", x, y, 50, 50, this.angulo+Math.PI/2, this.posX, this.posY);
          
     }

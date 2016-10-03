@@ -28,6 +28,8 @@ public class Jogo {
         //NAVE ESTA VIVA?
         if (nave.life <= 0)nave.alive = false;
         
+        if(nave.vetor > 0) nave.estaLigada = true;
+        if(nave.vetor == 0) nave.estaLigada = false;
         //RECEBIMENTO DE CONTROLES
         if(keys.contains("left")) nave.moveEsquerda(dt);
         if(keys.contains("right")) nave.moveDireita(dt);
@@ -54,7 +56,10 @@ public class Jogo {
         if (aleatorio.nextInt(1000) >= 980)this.listaAsteroides.add(this.spawn());
     }
     public void tecla(String c){
-        if(c.contains(" ") && nave.alive)this.tiros.add(nave.shoot());
+        if(c.contains(" ") && nave.alive){
+            this.tiros.add(nave.shoot());
+            Motor.tocar("shoot.wav");
+        }
     }
     public void desenhar(Tela tela){
        if (!nave.alive){
@@ -90,7 +95,7 @@ public class Jogo {
             if (asteroide.alive && nave.colisao(asteroide)){nave.life -= 1; asteroide.alive = false;nave.coolDown();}
             for(Tiro tiro: this.tiros){
                 if (tiro.alive && asteroide.alive && asteroide.colisao(tiro)){
-                    //Motor.tocar("explosion.wav");
+                    Motor.tocar("explosion.wav");
                     nave.score+= asteroide.tamanho*100;//Aumenta SCORE de acordo com o tamanho do asteroide
                     asteroide.alive = false;//Asteroide eh dado como morto
                     tiro.alive = false;//Tiro acaba
