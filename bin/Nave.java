@@ -66,5 +66,14 @@ public class Nave {
        }
        return false;
        }
+    public void coolDown(){
+        this.posX = 375;
+        this.posY = 275;
+        this.vetor = 0;
+    }
+    public void gameover(Tela tela){
+        tela.texto("GAMEOVER", 150, 250, 80, Cor.BRANCO);
+        tela.texto(String.format("SCORE TOTAL: %d", this.score), 150, 300, 50, Cor.BRANCO);
+    }
     
 }

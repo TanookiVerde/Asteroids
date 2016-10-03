@@ -54,22 +54,25 @@ public class Jogo {
         if (aleatorio.nextInt(1000) >= 980)this.listaAsteroides.add(this.spawn());
     }
     public void tecla(String c){
-        if(c.contains(" "))this.tiros.add(nave.shoot());
+        if(c.contains(" ") && nave.alive)this.tiros.add(nave.shoot());
     }
     public void desenhar(Tela tela){
+       if (!nave.alive){
+            nave.gameover(tela);
+        }
         //TIROS
         for(Tiro tiro: this.tiros){
           if (tiro.alive)tiro.desenhar(tela);
           }
         //NAVE
-        nave.desenhar(tela);
+        if(nave.alive)nave.desenhar(tela);
         //ASTEROIDE
         for(Asteroide asteroide:this.listaAsteroides){
           if (asteroide.alive)asteroide.desenhar(tela);
         }
         //HUD
-        tela.texto(String.format("VIDA: %d", nave.life), 10, 40, 40, Cor.BRANCO);
-        tela.texto(String.format("SCORE: %d", nave.score), 250, 40, 40, Cor.BRANCO);
+        if(nave.alive)tela.texto(String.format("VIDA: %d", nave.life), 10, 40, 40, Cor.BRANCO);
+        if(nave.alive)tela.texto(String.format("SCORE: %d", nave.score), 250, 40, 40, Cor.BRANCO);
     }
     public static void main (String[] args){
         new Motor(new Jogo());
@@ -84,7 +87,7 @@ public class Jogo {
                posYTemp = 0;
         Asteroide asteroideTemp;
         for(Asteroide asteroide: this.listaAsteroides){
-            if (asteroide.alive && nave.colisao(asteroide)){nave.life -= 1; asteroide.alive = false;}
+            if (asteroide.alive && nave.colisao(asteroide)){nave.life -= 1; asteroide.alive = false;nave.coolDown();}
             for(Tiro tiro: this.tiros){
                 if (tiro.alive && asteroide.alive && asteroide.colisao(tiro)){
                     //Motor.tocar("explosion.wav");
@@ -114,4 +117,5 @@ public class Jogo {
             splitAst = false;
         }
     }
+    
 }
